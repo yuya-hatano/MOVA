@@ -1,6 +1,6 @@
-############################################################
-# MOVA(a method of variant pathogenicity using alphafold2) #
-############################################################
+#####################################################################
+# MOVA(a method of missense variant pathogenicity using AlphaFold2) #
+#####################################################################
 
 # Requires the data.table, ggplot2, LowMACA, randomForest, ROCR, bio3d, seqinr, dplyr
 #  packages  (needs to be installed first)
@@ -13,7 +13,7 @@ library(bio3d)
 library(seqinr)
 library(dplyr)
 
-MOVA <- function(fasta_file_name, protein_name,  pdb_file_name, variant_file){
+MOVA <- function(fasta_file_name, protein_name,  pdb_file_name, variant_file, phenotype = "Target"){
 # Import BLOSUM62
  data("BLOSUM62")
  amino_code1 <- c(
@@ -33,17 +33,14 @@ MOVA <- function(fasta_file_name, protein_name,  pdb_file_name, variant_file){
  Protein3Dp <- Protein3Dr %>%
   group_by(resno) %>%
   summarise(x = mean(x),y = mean(y), z = mean(z), b = mean(b))
-# Save the data of atoms in the pdb file summarized by amino acid residue.
- fwrite(Protein3Dp,  paste(protein_name, "_3D.csv", sep = ""))
 # Load the list of variants
  D <- fread(variant_file)
  D <- D[(D$possible!="DMp")|(is.na(D$possible)), ]
 #
- D <- D[(D$Type=="ALSFTD")|(D$Type=="Ctrl"), ]
+ if(phenotype == "Target"){
+  D <- D[(D$Type=="ALSFTD")|(D$Type=="Ctrl"), ]
+ }
 #
-# Display the number of variants.
- paste("positive_variant(n)", nrow(D[D$Type=="ALSFTD",]), sep = ":")
- paste("negative_variant(n)", nrow(D[D$Type=="Ctrl",]), sep = ":")
 #Extract the variant positions and substituted residues.
  D[, possible:=NULL]
  D$Pos <- as.integer(substr(D$change, 2, nchar(D$change)-1))
@@ -78,18 +75,27 @@ MOVA <- function(fasta_file_name, protein_name,  pdb_file_name, variant_file){
  colnames(df) <- c("ID", "result", "predict",  "change")
  D$label <- 1:nrow(D)
 #randomForest
+ oldw <- getOption("warn")
+ options(warn=-1)
  for (i in 1:nrow(D)){
 #leave-one-out. Separate training data (dat) from test data (val)
   dat <- D[D$label != i,]
   val <- D[D$label == i,]
-  val_type <- D[D$label == i,]$Type2
 #Model construction with randomForest.
 #Type2 is the objective variable and con+x+y+z+b is the explanatory variable.
-  rf<-randomForest(Type2~con+x+y+z+b,dat, importance=TRUE)
+  if(phenotype == "Target"){
+   rf<-randomForest(Type2~con+x+y+z+b,dat, importance=TRUE)
+  } else {
+   rf<-randomForest(Type3~con+x+y+z+b,dat, importance=TRUE)
+  }
 #Measure variable importance.
   imp.rf <- importance(rf)
 #Store the predicted values of the test data in data.frame.
-  f <-data.frame(ID = val$ID, result = val$Type2, predict = predict(rf,val), change = val$change)
+  if(phenotype == "Target"){
+   f <-data.frame(ID = val$ID, result = val$Type2, predict = predict(rf,val), change = val$change)
+  } else {
+   f <-data.frame(ID = val$ID, result = val$Type3, predict = predict(rf,val), change = val$change)
+  }
   df <- rbind(df, f)
 #Store the variable importance in data.frame.
   f <- data.frame(name = rownames(imp.rf), IncNodePurity = imp.rf, n = i)
@@ -97,10 +103,15 @@ MOVA <- function(fasta_file_name, protein_name,  pdb_file_name, variant_file){
  }
 #Store the predicted values of all variants for final predict in data.frame.
  for (i in 1:100){
-  rf <-randomForest(Type2~con+x+y+z+b,D)
+  if(phenotype == "Target"){
+   rf <-randomForest(Type2~con+x+y+z+b,D)
+  } else {
+   rf <-randomForest(Type3~con+x+y+z+b,D)
+  }
   f <-data.frame(change = all_aa$change, predict = predict(rf,all_aa), n = i) 
   fpredict <- rbind(fpredict, f)
  }
+ options(warn = oldw)
 #Take the average of the predictions to make the final prediction.
  fpredictb <- fpredict %>%
   group_by(change) %>%
@@ -120,9 +131,9 @@ MOVA <- function(fasta_file_name, protein_name,  pdb_file_name, variant_file){
  fpredictb$Pos <- as.integer(substr(fpredictb$change, 2, nchar(fpredictb$change)-1))
  fpredictb$alt <- substr(fpredictb$change, nchar(fpredictb$change), nchar(fpredictb$change))
 #Save the final prediction.
- fwrite(fpredictb, paste(protein_name, "finalpredict.csv", sep = ""))
+ fwrite(fpredictb, paste(protein_name, phenotype, "finalpredict.csv", sep = "_"))
 #Save the average of variable importance.
- fwrite(imp.rfb, paste(protein_name, "importance.csv", sep = ""))
+ fwrite(imp.rfb, paste(protein_name, phenotype, "importance.csv", sep = "_"))
 #Plot ROC curve
  pred <- prediction(df$predict, df$result)
  perf <- performance(pred, "tpr", "fpr")
@@ -139,19 +150,25 @@ MOVA <- function(fasta_file_name, protein_name,  pdb_file_name, variant_file){
   )
  tab$Youden <- tab$Sensitivity+tab$Specificity-1
  YI <- tab[order(tab$Youden, decreasing=T), ]
- YI <- cbind(YI[1,], data.frame(AUC = c(auc)), data.frame(positive_variant_num = c(nrow(D[D$Type=="ALSFTD",]))), data.frame(negative_variant_num = c(nrow(D[D$Type=="Ctrl",]))))
- fwrite(YI, paste(protein_name, "_result.csv", sep = ""))
- fwrite(merge(D,df), paste(protein_name, "_predict.csv", sep = ""))
+ YI <- cbind(YI[1,], data.frame(AUC = c(auc), positive_variant_num = c(nrow(df[df$result==1,])), negative_variant_num = c(nrow(df[df$result==0,]))))
+ fwrite(YI, paste(protein_name, phenotype, "result.csv", sep = "_"))
+ fwrite(merge(D,df), paste(protein_name, phenotype, "predict.csv", sep = "_"))
  return(YI)
 }
 
-PolyPhen_MOVA <- function(file_name){
+PolyPhen_MOVA <- function(file_name, phenotype = "Target"){
  df <- fread(file_name)
  #
- df <- df[(df$Type=="ALSFTD")|(df$Type=="Ctrl"), ]
+ if(phenotype == "Target"){
+  df <- df[(df$Type=="ALSFTD")|(df$Type=="Ctrl"), ]
+ }
  #
  df$predict <- df$pph2_prob
- df$result <- df$Type2
+ if(phenotype == "Target"){
+  df$result <- df$Type2
+ } else {
+  df$result <- df$Type3
+ }
  #
  pred <- prediction(df$predict, df$result)
  perf <- performance(pred, "tpr", "fpr")
@@ -161,12 +178,18 @@ PolyPhen_MOVA <- function(file_name){
  return(auc)
 }
 
-AlphScore_MOVA <- function(file_name){
+AlphScore_MOVA <- function(file_name, phenotype = "Target"){
  df <- fread(file_name)
  #
+ if(phenotype == "Target"){
  df <- df[(df$Type=="ALSFTD")|(df$Type=="Ctrl"), ]
+ }
  df$predict <- df$AlphScore
- df$result <- df$Type2
+ if(phenotype == "Target"){
+  df$result <- df$Type2
+ } else {
+  df$result <- df$Type3
+ }
  #
  pred <- prediction(df$predict, df$result)
  perf <- performance(pred, "tpr", "fpr")
@@ -176,13 +199,19 @@ AlphScore_MOVA <- function(file_name){
  return(auc)
 }
 
-CADD_MOVA <- function(file_name){
+CADD_MOVA <- function(file_name, phenotype = "Target"){
  df <- fread(file_name)
- #A
- df <- df[(df$Type=="ALSFTD")|(df$Type=="Ctrl"), ]
+ #
+ if(phenotype == "Target"){
+  df <- df[(df$Type=="ALSFTD")|(df$Type=="Ctrl"), ]
+ }
  #
  df$predict <- df$CADD_raw
- df$result <- df$Type2
+ if(phenotype == "Target"){
+  df$result <- df$Type2
+ } else {
+  df$result <- df$Type3
+ }
  #
  pred <- prediction(df$predict, df$result)
  perf <- performance(pred, "tpr", "fpr")
@@ -250,13 +279,19 @@ Com_CADD_MOVA <- function(predict_file_name){
 }
 
 
-REVEL_MOVA <- function(file_name){
+REVEL_MOVA <- function(file_name, phenotype = "Target"){
  df <- fread(file_name)
 #
- df <- df[(df$Type=="ALSFTD")|(df$Type=="Ctrl"), ]
+ if(phenotype == "Target"){
+  df <- df[(df$Type=="ALSFTD")|(df$Type=="Ctrl"), ]
+ }
 #
  df$predict <- df$REVEL_score
- df$result <- df$Type2
+ if(phenotype == "Target"){
+  df$result <- df$Type2
+ } else {
+  df$result <- df$Type3
+ }
 #
  pred <- prediction(df$predict, df$result)
  perf <- performance(pred, "tpr", "fpr")
@@ -324,11 +359,13 @@ Com_REVEL_MOVA <- function(predict_file_name){
  return(auc_bind)
 }
 
-EVE_MOVA <- function(file_name, EVE_file_name){
+EVE_MOVA <- function(file_name, EVE_file_name, phenotype = "Target"){
  df <- fread(file_name)
  y <- fread(EVE_file_name)
 #
- df <- df[(df$Type=="ALSFTD")|(df$Type=="Ctrl"), ]
+ if(phenotype == "Target"){
+  df <- df[(df$Type=="ALSFTD")|(df$Type=="Ctrl"), ]
+ }
 #
  df[, EVE:=NA]
  df[, EVE_class:=NA]
@@ -338,7 +375,11 @@ EVE_MOVA <- function(file_name, EVE_file_name){
   df$EVE_class[i] <- y[(y$position==df$Pos[i])&(y$mt_aa==df$aaalt[i])]$EVE_classes_75_pct_retained_ASM
  }
  df$predict <- df$EVE
- df$result <- df$Type2
+ if(phenotype == "Target"){
+  df$result <- df$Type2
+ } else {
+  df$result <- df$Type3
+ }
  df <- subset(df, !(is.na(df$predict)))
 #
  pred <- prediction(df$predict, df$result)
@@ -400,11 +441,11 @@ Edit_variant_data <- function(AlphScore_final_file, hgmd_file_name, gnomad_file_
  colnames(x)[4] <- "Alternate"
  D <- merge(x,y)
  D$Type2 <- 0
- D$Type3 <- 0
+ D$Type3 <- 1
  D[D$Type=="ALSFTD",]$Type2 <- 1
  D[D$Type=="ALSFTD",]$Type3 <- 1
- D[D$Type=="Pathogenic",]$Type2 <- 0
- D[D$Type=="Pathogenic",]$Type3 <- 1
+ D[D$Type=="Ctrl",]$Type2 <- 0
+ D[D$Type=="Ctrl",]$Type3 <- 0
  fwrite(D, export_file_name)
 }
 
