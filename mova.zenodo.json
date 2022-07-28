@@ -2,25 +2,20 @@
     "description": "a method of missense variant pathogenicity using AlphaFold2", 
     "license": "other-open", 
     "title": "yuya-hatano/MOVA:", 
-    "version": "v1.0.0", 
+    "version": "v1.0.1", 
     "upload_type": "software", 
     "publication_date": "2022-07-28", 
     "creators": [
         {
-            "name": "Yuya Hatano"
+            "name": "Yuya, Hatano", 'orcid': "0000-0001-9048-5985"
+        },
+        {
+            "name": "Tomohiko, Ishihara", 'orcid': "0000-0001-9915-8665"
+        },
+        {
+            "name": "Osamu, Onodera", 'orcid': "0000-0003-3354-5472"
         }
     ], 
-    "access_right": "open", 
-    "related_identifiers": [
-        {
-            "scheme": "url", 
-            "identifier": "https://github.com/yuya-hatano/MOVA/tree/v1.0.0", 
-            "relation": "isSupplementTo"
-        }, 
-        {
-            "scheme": "doi", 
-            "identifier": "10.5281/zenodo.6930163", 
-            "relation": "isVersionOf"
-        }
+    "access_right": "open"
     ]
 }
