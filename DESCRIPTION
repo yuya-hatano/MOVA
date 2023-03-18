@@ -8,4 +8,4 @@ Authors@R: person("Yuya", "Hatano", email = "hatanoyuya@gmail.com",
 Maintainer: Yuya Hatano <hatanoyuya@gmail.com>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
-Imports: data.table, ggplot2, LowMACA, randomForest, ROCR, bio3d, seqinr, dplyr, tidyverse, cvAUC, splitstackshape, kernlab, xgboost, Matrix, gridExtra
+Imports: stringr, data.table, ggplot2, LowMACA, randomForest, ROCR, bio3d, seqinr, dplyr, tidyverse, cvAUC, splitstackshape, kernlab, xgboost, Matrix, gridExtra
