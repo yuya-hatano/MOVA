@@ -1,0 +1,12 @@
+export("AlphScore_MOVA", "CADD_AlphScore", "CADD_MOVA",
+       "Com_CADD_MOVA", "Com_REVEL_MOVA", "Edit_final_variant_file",
+       "Edit_gnomAD_file", "Edit_polyphen_data", "Edit_variant_data",
+       "EVE_Final", "EVE_MOVA", "Hgmd_divide", "MOVA",
+       "MOVA_3d_distance", "MOVA_3d_distance_log", "MOVA_LOPOV",
+       "MOVA_only_3d_coordinates", "MOVA_only_3d_distance",
+       "MOVA_only_BLOSUM62", "MOVA_only_pLDDT",
+       "MOVA_plus_3d_distance", "MOVA_plus_3d_distance_SVM",
+       "MOVA_plus_3d_distance_xgboost", "MOVA_predistance",
+       "MOVA_redraw", "MOVA_SVM", "MOVA_without_3d_coordinates",
+       "MOVA_xgboost", "PolyPhen_MOVA", "REVEL_AlphScore",
+       "REVEL_MOVA", "variant_predict_plot")
