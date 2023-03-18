@@ -10,3 +10,4 @@ export("AlphScore_MOVA", "CADD_AlphScore", "CADD_MOVA",
        "MOVA_redraw", "MOVA_SVM", "MOVA_without_3d_coordinates",
        "MOVA_xgboost", "PolyPhen_MOVA", "REVEL_AlphScore",
        "REVEL_MOVA", "variant_predict_plot")
+import(data.table, ggplot2, LowMACA, randomForest, ROCR, bio3d, seqinr, dplyr, tidyverse, cvAUC, splitstackshape, kernlab, xgboost, Matrix, gridExtra)
