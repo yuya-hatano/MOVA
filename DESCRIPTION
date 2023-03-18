@@ -1,9 +1,11 @@
 Package: MOVA
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
-Date: 2023-03-12
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
+Title: a method for evaluating the pathogenicity of missense variants using AlphaFold2
+Version: 1.1.0
+Date: 2023-03-18
+Authors@R: person("Yuya", "Hatano", email = "hatanoyuya@gmail.com",
+  role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9048-5985"))
+Maintainer: Yuya Hatano <hatanoyuya@gmail.com>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
+Imports: data.table, ggplot2, LowMACA, randomForest, ROCR, bio3d, seqinr, dplyr, tidyverse, cvAUC, splitstackshape, kernlab, xgboost, Matrix, gridExtra
