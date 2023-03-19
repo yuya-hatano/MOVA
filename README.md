@@ -29,8 +29,7 @@ library(LowMACA)
 library(MOVA)
 ```
 - Create a csv file from the HGMD data by manually creating four columns as shown in the figure below.
-- In the "possible" column, enter "DM" for DM and "DMp" for DM? in HGMD.
-- In the "Type" column, enter "Target" if the missense variant is the target phenotype, and "Pathogenic" otherwise.
+- Specifically, based on HGMD data, list amino acid changes (column: HGVSprotein), VCF (column: VCF), DM if DM in HGMD, DMp if DM? (column: possible), Pathogenic if pathogenic but not a target phenotype, and Target if target phenotype(column: Type) for each variant as shown in the figure below and save it. 
 ![readme_pic1](https://user-images.githubusercontent.com/108056381/226163655-e107e999-751a-4c11-8eb8-a7b7e8afc4a6.png)
 - Perform the following in R.
 ```
