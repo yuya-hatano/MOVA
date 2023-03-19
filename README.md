@@ -18,7 +18,7 @@ library(devtools)
 install_github("yuya-hatano/MOVA")
 ```
 ***
-##Tutorial
+## Tutorial
 
 To load the package, enter the following in your R session:
 ```
