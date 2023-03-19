@@ -20,7 +20,10 @@ install_github("yuya-hatano/MOVA")
 ***
 ## Tutorial
 
-To load the package, enter the following in your R session:
+- To load the package, enter the following in your R session:
 ```
 library(MOVA)
 ```
+- Create a csv file from the HGMD data by manually creating four columns as shown in the figure below.
+- In the "possible" column, enter "DM" for DM and "DMp" for DM? in HGMD.
+- In the "Type" column, enter "Target" if the missense variant is the target phenotype, and "Pathogenic" otherwise.
