@@ -36,3 +36,5 @@ library(MOVA)
 ```
 Hgmd_divide("created csv file")
 ```
+- Search for target genes in gnomAD v3.1.2.
+- Select Ensembl canonical transcript.
