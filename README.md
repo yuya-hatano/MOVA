@@ -28,3 +28,7 @@ library(MOVA)
 - In the "possible" column, enter "DM" for DM and "DMp" for DM? in HGMD.
 - In the "Type" column, enter "Target" if the missense variant is the target phenotype, and "Pathogenic" otherwise.
 ![readme_pic1](https://user-images.githubusercontent.com/108056381/226163655-e107e999-751a-4c11-8eb8-a7b7e8afc4a6.png)
+- Perform the following in R.
+```
+Hgmd_divide("created csv file")
+```
