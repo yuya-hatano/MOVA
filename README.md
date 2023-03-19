@@ -7,17 +7,14 @@ Yuya Hatano, Tomohiko Ishihara,  Osamu Onodera. Accuracy of a machine learning m
 - MOVA has been confirmed to work with R 4.2.2.
 - devtools installation is required.
 
-***
 ```
 install.packages("devtools", dependencies = TRUE)
 ```
-***
 
 - To install MOVA, execute the following two lines
 
-***
 ```
 library(devtools)
 install_github("yuya-hatano/MOVA")
 ```
-***
+
