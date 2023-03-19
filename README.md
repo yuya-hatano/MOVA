@@ -41,4 +41,5 @@ Hgmd_divide("created csv file")
 - Please select only Missense / inframe indel.
 - Deselect Indels and select SNVs.
 ![readme_pic3](https://user-images.githubusercontent.com/108056381/226166217-7bf41609-458e-4cf6-9717-cfcf4b1bc3d2.png)
-- Select 'Export variant to CSV' and download.
+- Select 'Export variants to CSV' and download.
+![readme_pic4](https://user-images.githubusercontent.com/108056381/226166553-c767cbeb-64f7-405c-a172-cc2ad332a5df.png)
