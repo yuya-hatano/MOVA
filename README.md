@@ -38,3 +38,4 @@ Hgmd_divide("created csv file")
 ```
 - Search for target genes in gnomAD v3.1.2.
 - Select Ensembl canonical transcript.
+![readme_pic2](https://user-images.githubusercontent.com/108056381/226165662-1cf3d48a-5c20-44a6-a800-8da242bccdb1.png)
