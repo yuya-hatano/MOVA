@@ -54,5 +54,11 @@ Edit_gnomAD_file("downloaded (and modified) gnomAD file", "output file (csv)")
 ```
 Edit_variant_data("Path of AlphScore_final.tsv", "HGMD file created by Hgmd_divide", "gnomAD file created by Edit_gnomAD_file", "Uniprot name of target gene", "Gene name ", "Output file (csv)")
 ```
-- In addition to the output file, (gene name)_variant.csv file and (gene name)_alph.csv file are output. 
-- (gene name)_alph.csv file is an important file that is ultimately needed to create the final predicted value file.
+- In addition to the output file, "(gene name)_variant.csv" file and "(gene name)_alph.csv" file are output. 
+- "(gene name)_alph.csv" file is an important file that is ultimately needed to create the final predicted value file.
+- Please download dbNSFP4.3a from the following URL.
+- http://database.liulab.science/dbNSFP#version
+- Enter the following in your R session:
+```
+Edit_polyphen_data(Path of the dbNSFP4.3a_variant file for the Chromosome in which the gene resides, Path of output file by the Edit_variant_data function, Path of "(gene name)_alph.csv" output by the Edit_variant_data function., uniprot name of target protein, Lower limit position of the targeted gene (hg38), Upper limit position of the targeted gene (hg38), Name of output file 1, Name of output file 2)
+```
