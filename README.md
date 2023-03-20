@@ -61,5 +61,15 @@ Edit_variant_data("Path of AlphScore_final.tsv", "HGMD file created by Hgmd_divi
 - Enter the following in your R session:
 ```
 Edit_polyphen_data(Path of the dbNSFP4.3a_variant file for the Chromosome in which the gene resides, Path of output file by the Edit_variant_data function, Path of "(gene name)_alph.csv" output by the Edit_variant_data function., uniprot name of target protein, Lower limit position of the targeted gene (hg38), Upper limit position of the targeted gene (hg38), Name of output file 1, Name of output file 2)
-Edit_final_variant_file("./source/TARDBP_alphpol.csv","./source/TARDBP_alphpol2.csv")
+Edit_final_variant_file(output file2 by Edit_polyphen_data, output file)
 ```
+- Edit fasta file that records the amino acid sequence information of the target protein. The first line should describe >Protein, and the amino acid sequence should begin on the second line.
+- Please download pdb file from the following URL.
+- https://alphafold.ebi.ac.uk/
+- Enter the following in your R session:
+```
+MOVA(fasta_file_name, protein_name, pdb_file_name, file output by the Edit_final_variant_file function, output file 1 by the Edit_polyphen_data function, phenotype = "Target")
+```
+- This will result in analysis by MOVA.
+- MOVA has many other functions. For a detailed description of each function, please refer to the following URL.
+- https://yuya-hatano.github.io/MOVA/docs/reference/index.html
