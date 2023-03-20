@@ -46,9 +46,13 @@ Hgmd_divide("created csv file")
 - Manually remove all but the missense variants from the downloaded file.
 - Enter the following in your R session:
 ```
-Edit_gnomAD_file("downloaded (and modified) gnomAD file", "output file")
+Edit_gnomAD_file("downloaded (and modified) gnomAD file", "output file (csv)")
 ```
 - Please download AlphScore_final.tsv from the following URL.
 - https://zenodo.org/record/6288139
-
-
+- Enter the following in your R session:
+```
+Edit_variant_data("Path of AlphScore_final.tsv", "HGMD file created by Hgmd_divide", "gnomAD file created by Edit_gnomAD_file", "Uniprot name of target gene", "Gene name ", "Output file (csv)")
+```
+- In addition to the output file, (gene name)_variant.csv file and (gene name)_alph.csv file are output. 
+- (gene name)_alph.csv file is an important file that is ultimately needed to create the final predicted value file.
