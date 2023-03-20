@@ -61,4 +61,5 @@ Edit_variant_data("Path of AlphScore_final.tsv", "HGMD file created by Hgmd_divi
 - Enter the following in your R session:
 ```
 Edit_polyphen_data(Path of the dbNSFP4.3a_variant file for the Chromosome in which the gene resides, Path of output file by the Edit_variant_data function, Path of "(gene name)_alph.csv" output by the Edit_variant_data function., uniprot name of target protein, Lower limit position of the targeted gene (hg38), Upper limit position of the targeted gene (hg38), Name of output file 1, Name of output file 2)
+Edit_final_variant_file("./source/TARDBP_alphpol.csv","./source/TARDBP_alphpol2.csv")
 ```
