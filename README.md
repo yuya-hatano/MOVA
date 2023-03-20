@@ -44,3 +44,12 @@ Hgmd_divide("created csv file")
 - Select 'Export variants to CSV' and download.
 ![readme_pic4](https://user-images.githubusercontent.com/108056381/226166553-c767cbeb-64f7-405c-a172-cc2ad332a5df.png)
 - Manually remove all but the missense variants from the downloaded file.
+- Enter the following in your R session:
+```
+Edit_gnomAD_file("downloaded (and modified) gnomAD file", "output file")
+```
+- Please download AlphScore_final.tsv from the following URL.
+- https://zenodo.org/record/6288139
+![image](https://user-images.githubusercontent.com/108056381/226308517-8236f51f-ff99-47bb-b859-cc85280c42f5.png)
+
+
