@@ -1,7 +1,7 @@
 Package: MOVA
 Type: Package
 Title: a method for evaluating the pathogenicity of missense variants using AlphaFold2
-Version: 1.1.0
+Version: 1.2.0
 Date: 2023-03-18
 Authors@R: person("Yuya", "Hatano", email = "hatanoyuya@gmail.com",
   role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9048-5985"))
