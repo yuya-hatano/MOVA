@@ -51,11 +51,102 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-Tutorial
+
+<h1 id="mova">MOVA</h1>
+<p>a method for evaluating the pathogenicity of missense variants using
+AlphaFold2 <br /> MOVA algorithms are described in detail in:<br />
+Yuya Hatano, Tomohiko Ishihara, Osamu Onodera. Accuracy of a machine
+learning method based on structural and locational information from
+AlphaFold2 for predicting the pathogenicity of TARDBP and FUS gene
+variants in ALS. bioRxiv 2022.07.07.499092; doi:
+https://doi.org/10.1101/2022.07.07.499092
+<h2 id="installation">installation</h1> 
+<li>MOVA has
+been confirmed to work with R 4.2.2.</li>
+<li>devtools and LowMACA installation
+is required.</li></p>
+<pre><code>install.packages(&quot;devtools&quot;, dependencies = TRUE)
+if (!require(&quot;BiocManager&quot;, quietly = TRUE))
+    install.packages(&quot;BiocManager&quot;)
+BiocManager::install(&quot;LowMACA&quot;)</code></pre>
+<ul>
+<li>To install MOVA, execute the following two lines</li>
+</ul>
+<pre><code>library(devtools)
+install_github(&quot;yuya-hatano/MOVA&quot;)</code></pre>
+<hr />
+<h2 id="tutorial">Tutorial</h2>
+<ul>
+<li>To load the package, enter the following in your R session:</li>
+</ul>
+<pre><code>library(LowMACA)
+library(MOVA)</code></pre>
+<ul>
+<li>Create a csv file from the HGMD data by manually creating four
+columns as shown in the figure below.</li>
+<li>Specifically, based on HGMD data, list amino acid changes (column:
+HGVSprotein), VCF (column: VCF), DM if DM in HGMD, DMp if DM? (column:
+possible), Pathogenic if pathogenic but not a target phenotype, and
+Target if target phenotype(column: Type) for each variant as shown in
+the figure below and save it. <img
+src="https://user-images.githubusercontent.com/108056381/226163655-e107e999-751a-4c11-8eb8-a7b7e8afc4a6.png"
+alt="readme_pic1" /></li>
+<li>Perform the following in R.</li>
+</ul>
+<pre><code>Hgmd_divide(&quot;created csv file&quot;)</code></pre>
+<ul>
+<li>Search for target genes in gnomAD v3.1.2.</li>
+<li>Select Ensembl canonical transcript. <img
+src="https://user-images.githubusercontent.com/108056381/226165662-1cf3d48a-5c20-44a6-a800-8da242bccdb1.png"
+alt="readme_pic2" /></li>
+<li>Please select only Missense / inframe indel.</li>
+<li>Deselect Indels and select SNVs. <img
+src="https://user-images.githubusercontent.com/108056381/226166217-7bf41609-458e-4cf6-9717-cfcf4b1bc3d2.png"
+alt="readme_pic3" /></li>
+<li>Select 'Export variants to CSV' and download. <img
+src="https://user-images.githubusercontent.com/108056381/226166553-c767cbeb-64f7-405c-a172-cc2ad332a5df.png"
+alt="readme_pic4" /></li>
+<li>Manually remove all but the missense variants from the downloaded
+file.</li>
+<li>Enter the following in your R session:</li>
+</ul>
+<pre><code>Edit_gnomAD_file(&quot;downloaded (and modified) gnomAD file&quot;, &quot;output file (csv)&quot;)</code></pre>
+<ul>
+<li>Please download AlphScore_final.tsv from the following URL.</li>
+<li><a href="https://zenodo.org/record/6288139">https://zenodo.org/record/6288139</a></li>
+<li>Enter the following in your R session:</li>
+</ul>
+<pre><code>Edit_variant_data(&quot;Path of AlphScore_final.tsv&quot;, &quot;HGMD file created by Hgmd_divide&quot;, &quot;gnomAD file created by Edit_gnomAD_file&quot;, &quot;Uniprot name of target gene&quot;, &quot;Gene name &quot;, &quot;Output file (csv)&quot;)</code></pre>
+<ul>
+<li>In addition to the output file, "(gene name)_variant.csv" file and "(gene name)_alph.csv" file are output.</li>
+<li>"(gene name)_alph.csv" file is an important file that is ultimately needed to create the final predicted value file.</li>
+<li>Please download dbNSFP4.3a from the following URL.</li>
+<li><a href="http://database.liulab.science/dbNSFP#version">http://database.liulab.science/dbNSFP#version</a></li>
+<li>Enter the following in your R session:</li>
+</ul>
+<pre><code>Edit_polyphen_data(Path of the dbNSFP4.3a_variant file for the Chromosome in which the gene resides, Path of output file by the Edit_variant_data function, Path of &quot;(gene name)_alph.csv&quot; output by the Edit_variant_data function., uniprot name of target protein, Lower limit position of the targeted gene (hg38), Upper limit position of the targeted gene (hg38), Name of output file 1, Name of output file 2)
+Edit_final_variant_file(output file2 by Edit_polyphen_data, output file)</code></pre>
+<ul>
+<li>Edit fasta file that records the amino acid sequence information of
+the target protein. The first line should describe &gt;Protein, and the
+amino acid sequence should begin on the second line.</li>
+<li>Please download pdb file from the following URL.</li>
+<li><a href="https://alphafold.ebi.ac.uk/">https://alphafold.ebi.ac.uk/</a></li>
+<li>Enter the following in your R session:</li>
+</ul>
+<pre><code>MOVA(fasta_file_name, protein_name, pdb_file_name, file output by the Edit_final_variant_file function, output file 1 by the Edit_polyphen_data function, phenotype = &quot;Target&quot;)</code></pre>
+<ul>
+<li>This will result in analysis by MOVA.</li>
+<li>MOVA has many other functions. For a detailed description of each
+function, please refer to the following URL.</li>
+<li><a href="https://yuya-hatano.github.io/MOVA/docs/reference/index.html">https://yuya-hatano.github.io/MOVA/docs/reference/index.html</a></li>
+</ul>
+
+
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>What license is it under?</li>
+<li>© 2023 Yuya Hatano</li>
 </ul>
 </div>
 
