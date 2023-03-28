@@ -6,6 +6,6 @@ Date: 2023-03-18
 Authors@R: person("Yuya", "Hatano", email = "hatanoyuya@gmail.com",
   role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9048-5985"))
 Maintainer: Yuya Hatano <hatanoyuya@gmail.com>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Description: a method for evaluating the pathogenicity of missense variants using AlphaFold2
+License: © 2023 Yuya Hatano
 Imports: tibble, stringr, data.table, ggplot2, LowMACA, randomForest, ROCR, bio3d, seqinr, dplyr, tidyverse, cvAUC, splitstackshape, kernlab, xgboost, Matrix, gridExtra
