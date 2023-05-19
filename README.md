@@ -2,7 +2,7 @@
 a method for evaluating the pathogenicity of missense variants using AlphaFold2
 ***
 MOVA algorithms are described in detail in:  
-Yuya Hatano, Tomohiko Ishihara,  Osamu Onodera. Accuracy of a machine learning method based on structural and locational information from AlphaFold2 for predicting the pathogenicity of TARDBP and FUS gene variants in ALS. bioRxiv 2022.07.07.499092; doi: https://doi.org/10.1101/2022.07.07.499092
+Yuya Hatano, Tomohiko Ishihara, and Osamu Onodera. Accuracy of a machine learning method based on structural and locational information from AlphaFold2 for predicting the pathogenicity of TARDBP and FUS gene variants in ALS. BMC Bioinformatics 24, 206 (2023). https://doi.org/10.1186/s12859-023-05338-5
 ## Installation
 - MOVA has been confirmed to work with R 4.2.2.
 - devtools and LowMACA installation is required.
